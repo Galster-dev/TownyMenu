@@ -1,6 +1,7 @@
 package net.tolmikarc.townymenu.town.command;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import lombok.SneakyThrows;
@@ -12,7 +13,6 @@ public class TownMenuCommand extends SimpleCommand {
 	public TownMenuCommand() {
 		super("townmenu|tm");
 		setPermission(null);
-
 	}
 
 	@SneakyThrows
@@ -26,8 +26,8 @@ public class TownMenuCommand extends SimpleCommand {
 		}
 
 		Town town;
-		Resident resident = TownyAPI.getInstance().getDataSource().getResident(getPlayer().getName());
-		if (resident.hasTown()) {
+		Resident resident = TownyUniverse.getInstance().getResident(getPlayer().getName());
+		if (resident != null && resident.hasTown()) {
 			town = resident.getTown();
 			if (town.getMayor().equals(resident))
 				new TownMenu(town, getPlayer()).displayTo(getPlayer());

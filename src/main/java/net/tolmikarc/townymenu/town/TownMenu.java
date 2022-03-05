@@ -2,6 +2,7 @@ package net.tolmikarc.townymenu.town;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownySettings;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.*;
@@ -59,10 +60,9 @@ public class TownMenu extends Menu {
 		List<Resident> allOnlineResidents = new ArrayList<>();
 		LagCatcher.start("load-residents-online");
 		for (Player players : Bukkit.getOnlinePlayers()) {
-			try {
-				allOnlineResidents.add(TownyAPI.getInstance().getDataSource().getResident(players.getName()));
-			} catch (NotRegisteredException e) {
-				e.printStackTrace();
+			Resident resident = TownyUniverse.getInstance().getResident(players.getName());
+			if(resident != null) {
+				allOnlineResidents.add(resident);
 			}
 		}
 		LagCatcher.end("load-residents-online");
@@ -262,7 +262,7 @@ public class TownMenu extends Menu {
 
 				@Override
 				public ItemStack getItem() {
-					return ItemCreator.of(CompMaterial.TNT, Localization.TownMenu.ToggleMenu.EXPLODE, "", town.isBANG() ? Localization.TownMenu.ToggleMenu.TOGGLE_OFF : Localization.TownMenu.ToggleMenu.TOGGLE_OFF).build().make();
+					return ItemCreator.of(CompMaterial.TNT, Localization.TownMenu.ToggleMenu.EXPLODE, "", town.isBANG() ? Localization.TownMenu.ToggleMenu.TOGGLE_ON : Localization.TownMenu.ToggleMenu.TOGGLE_OFF).build().make();
 
 				}
 			};
@@ -273,8 +273,8 @@ public class TownMenu extends Menu {
 					if (TownySettings.getOutsidersPreventPVPToggle()) {
 						Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 						for (Player onlinePlayer : onlinePlayers) {
-							Resident onlinePlayerAsRes = TownyAPI.getInstance().getDataSource().getResident(onlinePlayer.getName());
-							if (onlinePlayerAsRes.hasTown()) {
+							Resident onlinePlayerAsRes = TownyUniverse.getInstance().getResident(onlinePlayer.getName());
+							if (onlinePlayerAsRes != null && onlinePlayerAsRes.hasTown()) {
 								if (!onlinePlayerAsRes.getTown().equals(town))
 									if (TownyAPI.getInstance().getTownBlock(onlinePlayer.getLocation()) != null)
 										if (TownyAPI.getInstance().getTownBlock(onlinePlayer.getLocation()).getTown().equals(town)) {
@@ -396,6 +396,7 @@ public class TownMenu extends Menu {
 		protected ItemStack convertToItemStack(Resident item) {
 			ItemStack itemSkull = new ItemStack(Material.PLAYER_HEAD, 1);
 			SkullMeta skull = (SkullMeta) itemSkull.getItemMeta();
+			assert skull != null;
 			skull.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + item.getFormattedTitleName());
 			if (item.getUUID() == null)
 				return null;
@@ -987,6 +988,7 @@ public class TownMenu extends Menu {
 		protected ItemStack convertToItemStack(Resident item) {
 			ItemStack itemSkull = new ItemStack(Material.PLAYER_HEAD, 1);
 			SkullMeta skull = (SkullMeta) itemSkull.getItemMeta();
+			assert skull != null;
 			skull.setDisplayName(item.getName());
 			OfflinePlayer player = Bukkit.getOfflinePlayer(item.getUUID());
 			skull.setOwningPlayer(player);

@@ -1,6 +1,7 @@
 package net.tolmikarc.townymenu.plot;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.TownBlockSettingsChangedEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.*;
@@ -47,10 +48,9 @@ public class PlotMenu extends Menu {
 
 		Set<Resident> onlineResidents = new HashSet<>();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			try {
-				onlineResidents.add(TownyAPI.getInstance().getDataSource().getResident(player.getName()));
-			} catch (NotRegisteredException e) {
-				e.printStackTrace();
+			Resident resident = TownyUniverse.getInstance().getResident(player.getName());
+			if(resident != null) {
+				onlineResidents.add(resident);
 			}
 		}
 
@@ -97,16 +97,13 @@ public class PlotMenu extends Menu {
 				return null;
 			ItemStack itemSkull = new ItemStack(Material.PLAYER_HEAD, 1);
 			SkullMeta skull = (SkullMeta) itemSkull.getItemMeta();
+			assert skull != null;
 			skull.setDisplayName(item.getName());
 			Player player = Bukkit.getPlayer(item.getUUID());
 			skull.setOwningPlayer(player);
 			List<String> lore = new ArrayList<>();
 			lore.add("");
-			try {
-				lore.add(item.getFriends().contains(TownyAPI.getInstance().getDataSource().getResident(getViewer().getName())) ? ChatColor.RED + "Remove Friend" : ChatColor.YELLOW + "Add Friend");
-			} catch (NotRegisteredException e) {
-				e.printStackTrace();
-			}
+			lore.add(item.getFriends().contains(TownyUniverse.getInstance().getResident(getViewer().getName())) ? ChatColor.RED + "Remove Friend" : ChatColor.YELLOW + "Add Friend");
 			skull.setLore(lore);
 			itemSkull.setItemMeta(skull);
 			return itemSkull;
@@ -116,9 +113,9 @@ public class PlotMenu extends Menu {
 		@Override
 		protected void onPageClick(Player player, Resident item, ClickType click) {
 
-			Resident playerResident = TownyAPI.getInstance().getDataSource().getResident(player.getName());
+			Resident playerResident = TownyUniverse.getInstance().getResident(player.getName());
 
-			if (item.equals(playerResident))
+			if (playerResident == null || item.equals(playerResident))
 				return;
 			if (playerResident.getFriends().contains(item)) {
 				playerResident.removeFriend(item);
