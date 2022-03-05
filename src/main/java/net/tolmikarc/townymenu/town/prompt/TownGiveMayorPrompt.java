@@ -14,7 +14,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownGiveMayorPrompt extends SimplePrompt {
 
-	Resident resident;
+	final Resident resident;
 
 	public TownGiveMayorPrompt(Resident resident) {
 		super(false);

@@ -14,7 +14,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class PlotEvictPrompt extends SimplePrompt {
 
-	TownBlock townBlock;
+	final TownBlock townBlock;
 
 	public PlotEvictPrompt(TownBlock townBlock) {
 		super(false);

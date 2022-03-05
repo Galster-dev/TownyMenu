@@ -15,7 +15,7 @@ import org.mineacademy.fo.model.HookManager;
 
 public class TownDepositPrompt extends SimplePrompt {
 
-	Town town;
+	final Town town;
 
 	public TownDepositPrompt(Town town) {
 		super(false);

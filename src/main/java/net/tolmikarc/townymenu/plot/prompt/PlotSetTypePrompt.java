@@ -21,7 +21,7 @@ public class PlotSetTypePrompt extends SimplePrompt {
 
 	private final List<String> plotTypes = Arrays.asList("residential", "commercial", "bank", "farm", "jail", "embassy", "wilds", "inn", "spleef", "arena");
 
-	TownBlock townBlock;
+	final TownBlock townBlock;
 
 	public PlotSetTypePrompt(TownBlock townBlock) {
 		super(false);

@@ -17,7 +17,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class PlotForSalePrompt extends SimplePrompt {
 
-	TownBlock townBlock;
+	final TownBlock townBlock;
 
 	public PlotForSalePrompt(TownBlock townBlock) {
 		super(false);

@@ -10,7 +10,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownKickPrompt extends SimplePrompt {
 
-	Resident resident;
+	final Resident resident;
 
 	public TownKickPrompt(Resident resident) {
 		super(false);

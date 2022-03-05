@@ -12,7 +12,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownTitlePrompt extends SimplePrompt {
 
-	Resident resident;
+	final Resident resident;
 
 	public TownTitlePrompt(Resident resident) {
 		super(false);

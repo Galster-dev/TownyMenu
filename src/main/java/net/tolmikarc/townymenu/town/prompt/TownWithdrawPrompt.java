@@ -14,7 +14,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownWithdrawPrompt extends SimplePrompt {
 
-	Town town;
+	final Town town;
 
 	public TownWithdrawPrompt(Town town) {
 		super(false);

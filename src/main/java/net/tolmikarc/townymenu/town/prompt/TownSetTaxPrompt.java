@@ -14,7 +14,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownSetTaxPrompt extends SimplePrompt {
 
-	Town town;
+	final Town town;
 
 	public TownSetTaxPrompt(Town town) {
 		super(false);

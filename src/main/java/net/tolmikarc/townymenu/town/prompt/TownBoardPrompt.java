@@ -11,7 +11,7 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownBoardPrompt extends SimplePrompt {
 
-	Town town;
+	final Town town;
 
 	public TownBoardPrompt(Town town) {
 		super(false);

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TownNamePrompt extends SimplePrompt {
 
-	Town town;
+	final Town town;
 
 	public TownNamePrompt(Town town) {
 		super(false);

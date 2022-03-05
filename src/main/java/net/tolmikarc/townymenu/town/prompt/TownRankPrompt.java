@@ -18,7 +18,7 @@ public class TownRankPrompt extends SimplePrompt {
 
 	// TODO fix
 
-	Resident resident;
+	final Resident resident;
 
 	public TownRankPrompt(Resident resident) {
 		super(false);
