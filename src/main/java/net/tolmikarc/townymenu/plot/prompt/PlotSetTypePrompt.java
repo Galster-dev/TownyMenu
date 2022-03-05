@@ -19,46 +19,45 @@ import java.util.List;
 
 public class PlotSetTypePrompt extends SimplePrompt {
 
-	private final List<String> plotTypes = Arrays.asList("residential", "commercial", "bank", "farm", "jail", "embassy", "wilds", "inn", "spleef", "arena");
+    final TownBlock townBlock;
+    private final List<String> plotTypes = Arrays.asList("residential", "commercial", "bank", "farm", "jail", "embassy", "wilds", "inn", "spleef", "arena");
 
-	final TownBlock townBlock;
+    public PlotSetTypePrompt(TownBlock townBlock) {
+        super(false);
 
-	public PlotSetTypePrompt(TownBlock townBlock) {
-		super(false);
+        this.townBlock = townBlock;
 
-		this.townBlock = townBlock;
-
-	}
+    }
 
 
-	@Override
-	protected String getPrompt(ConversationContext ctx) {
-		return Localization.PlotConversables.SetType.PROMPT.replace("{options}", Common.join(plotTypes, ", "));
-	}
+    @Override
+    protected String getPrompt(ConversationContext ctx) {
+        return Localization.PlotConversables.SetType.PROMPT.replace("{options}", Common.join(plotTypes, ", "));
+    }
 
-	@Override
-	protected boolean isInputValid(ConversationContext context, String input) {
-		return (plotTypes.contains(input.toLowerCase())) || (input.equalsIgnoreCase(Localization.CANCEL));
-	}
+    @Override
+    protected boolean isInputValid(ConversationContext context, String input) {
+        return (plotTypes.contains(input.toLowerCase())) || (input.equalsIgnoreCase(Localization.CANCEL));
+    }
 
-	@Override
-	protected String getFailedValidationText(ConversationContext context, String invalidInput) {
-		return Localization.PlotConversables.SetType.INVALID.replace("{options}", Common.join(plotTypes, ", "));
-	}
+    @Override
+    protected String getFailedValidationText(ConversationContext context, String invalidInput) {
+        return Localization.PlotConversables.SetType.INVALID.replace("{options}", Common.join(plotTypes, ", "));
+    }
 
-	@SneakyThrows
-	@Override
-	protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
-		if (!getPlayer(context).hasPermission("towny.command.plot.set." + input.toLowerCase()) || input.equalsIgnoreCase(Localization.CANCEL)) {
-			return null;
-		}
-		townBlock.setType(TownBlockType.valueOf(input.toUpperCase()));
-		townBlock.setChanged(true);
-		TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(townBlock);
-		Bukkit.getServer().getPluginManager().callEvent(event);
-		TownyAPI.getInstance().getDataSource().saveTownBlock(townBlock);
-		TownyAPI.getInstance().getDataSource().saveTown(townBlock.getTown());
-		tell(Localization.PlotConversables.SetType.RESPONSE.replace("{input}", input));
-		return null;
-	}
+    @SneakyThrows
+    @Override
+    protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
+        if (!getPlayer(context).hasPermission("towny.command.plot.set." + input.toLowerCase()) || input.equalsIgnoreCase(Localization.CANCEL)) {
+            return null;
+        }
+        townBlock.setType(TownBlockType.valueOf(input.toUpperCase()));
+        townBlock.setChanged(true);
+        TownBlockSettingsChangedEvent event = new TownBlockSettingsChangedEvent(townBlock);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        TownyAPI.getInstance().getDataSource().saveTownBlock(townBlock);
+        TownyAPI.getInstance().getDataSource().saveTown(townBlock.getTown());
+        tell(Localization.PlotConversables.SetType.RESPONSE.replace("{input}", input));
+        return null;
+    }
 }

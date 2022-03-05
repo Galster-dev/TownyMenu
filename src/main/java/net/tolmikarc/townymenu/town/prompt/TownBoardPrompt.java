@@ -11,33 +11,33 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownBoardPrompt extends SimplePrompt {
 
-	final Town town;
+    final Town town;
 
-	public TownBoardPrompt(Town town) {
-		super(false);
+    public TownBoardPrompt(Town town) {
+        super(false);
 
-		this.town = town;
+        this.town = town;
 
-	}
+    }
 
-	@Override
-	protected String getPrompt(ConversationContext ctx) {
-		return Localization.TownConversables.Board.PROMPT;
-	}
-
-
-	@Override
-	protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
-
-		if (!getPlayer(context).hasPermission("towny.command.town.set.board"))
-			return null;
+    @Override
+    protected String getPrompt(ConversationContext ctx) {
+        return Localization.TownConversables.Board.PROMPT;
+    }
 
 
-		town.setBoard(input);
-		TownyAPI.getInstance().getDataSource().saveTown(town);
+    @Override
+    protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
 
-		tell(Localization.TownConversables.Board.RESPONSE);
+        if (!getPlayer(context).hasPermission("towny.command.town.set.board"))
+            return null;
 
-		return null;
-	}
+
+        town.setBoard(input);
+        TownyAPI.getInstance().getDataSource().saveTown(town);
+
+        tell(Localization.TownConversables.Board.RESPONSE);
+
+        return null;
+    }
 }

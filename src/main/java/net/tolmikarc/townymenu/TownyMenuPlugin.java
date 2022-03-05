@@ -15,24 +15,24 @@ import java.util.List;
 
 public class TownyMenuPlugin extends SimplePlugin {
 
-	@Override
-	protected void onPluginStart() {
+    @Override
+    protected void onPluginStart() {
 
-		Common.log("Enabling Towny Menu by Tolmikarc");
-		Common.log("for TownyAdvanced");
-
-
-		Common.ADD_TELL_PREFIX = true;
-
-		registerCommand(new TownMenuCommand());
-		registerCommand(new PlotMenuCommand());
+        Common.log("Enabling Towny Menu by Tolmikarc");
+        Common.log("for TownyAdvanced");
 
 
-		TownyEconomyHandler.initialize(Towny.getPlugin());
-	}
+        Common.ADD_TELL_PREFIX = true;
 
-	@Override
-	public List<Class<? extends YamlStaticConfig>> getSettings() {
-		return Arrays.asList(Settings.class, Localization.class);
-	}
+        registerCommand(new TownMenuCommand());
+        registerCommand(new PlotMenuCommand());
+
+
+        TownyEconomyHandler.initialize(Towny.getPlugin());
+    }
+
+    @Override
+    public List<Class<? extends YamlStaticConfig>> getSettings() {
+        return Arrays.asList(Settings.class, Localization.class);
+    }
 }

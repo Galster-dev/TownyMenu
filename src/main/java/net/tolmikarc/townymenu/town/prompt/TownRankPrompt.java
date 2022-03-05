@@ -16,60 +16,60 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownRankPrompt extends SimplePrompt {
 
-	// TODO fix
+    // TODO fix
 
-	final Resident resident;
+    final Resident resident;
 
-	public TownRankPrompt(Resident resident) {
-		super(false);
-		this.resident = resident;
-	}
+    public TownRankPrompt(Resident resident) {
+        super(false);
+        this.resident = resident;
+    }
 
-	@Override
-	protected String getPrompt(ConversationContext ctx) {
-		return Localization.TownConversables.Rank.PROMPT.replace("{player}", resident.getName()).replace("{ranks}", Common.join(TownyPerms.getTownRanks(), ", "));
-	}
-
-
-	@Override
-	protected String getFailedValidationText(ConversationContext context, String invalidInput) {
-		return Localization.TownConversables.Rank.INVALID.replace("{ranks}", Common.join(TownyPerms.getTownRanks(), ", "));
-	}
-
-	@Override
-	protected boolean isInputValid(ConversationContext context, String input) {
-		return (TownyPerms.getTownRanks().contains(input) && !resident.hasTownRank(input)) || (input.toLowerCase().equals(Localization.CANCEL) || input.toLowerCase().equals(Localization.TownConversables.Rank.REMOVE));
-	}
-
-	@SneakyThrows
-	@Override
-	protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
-
-		if (input.toLowerCase().equals(Localization.CANCEL)) {
-			return null;
-		} else if (input.toLowerCase().equals(Localization.TownConversables.Rank.REMOVE)) {
-			for (String rank : TownyPerms.getTownRanks()) {
-				if (resident.hasTownRank(rank)) {
-					try {
-						resident.removeTownRank(rank);
-					} catch (NotRegisteredException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			tell(Localization.TownConversables.Rank.REMOVED_ALL.replace("{player}", resident.getName()));
-		} else {
-			try {
-				resident.addTownRank(input);
-				tell(Localization.TownConversables.Rank.RESPONSE.replace("{player}", resident.getName()).replace("{input}", input));
-			} catch (AlreadyRegisteredException e) {
-				e.printStackTrace();
-			}
-		}
-		TownyAPI.getInstance().getDataSource().saveTown(resident.getTown());
-		TownyAPI.getInstance().getDataSource().saveResident(resident);
+    @Override
+    protected String getPrompt(ConversationContext ctx) {
+        return Localization.TownConversables.Rank.PROMPT.replace("{player}", resident.getName()).replace("{ranks}", Common.join(TownyPerms.getTownRanks(), ", "));
+    }
 
 
-		return null;
-	}
+    @Override
+    protected String getFailedValidationText(ConversationContext context, String invalidInput) {
+        return Localization.TownConversables.Rank.INVALID.replace("{ranks}", Common.join(TownyPerms.getTownRanks(), ", "));
+    }
+
+    @Override
+    protected boolean isInputValid(ConversationContext context, String input) {
+        return (TownyPerms.getTownRanks().contains(input) && !resident.hasTownRank(input)) || (input.toLowerCase().equals(Localization.CANCEL) || input.toLowerCase().equals(Localization.TownConversables.Rank.REMOVE));
+    }
+
+    @SneakyThrows
+    @Override
+    protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
+
+        if (input.toLowerCase().equals(Localization.CANCEL)) {
+            return null;
+        } else if (input.toLowerCase().equals(Localization.TownConversables.Rank.REMOVE)) {
+            for (String rank : TownyPerms.getTownRanks()) {
+                if (resident.hasTownRank(rank)) {
+                    try {
+                        resident.removeTownRank(rank);
+                    } catch (NotRegisteredException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            tell(Localization.TownConversables.Rank.REMOVED_ALL.replace("{player}", resident.getName()));
+        } else {
+            try {
+                resident.addTownRank(input);
+                tell(Localization.TownConversables.Rank.RESPONSE.replace("{player}", resident.getName()).replace("{input}", input));
+            } catch (AlreadyRegisteredException e) {
+                e.printStackTrace();
+            }
+        }
+        TownyAPI.getInstance().getDataSource().saveTown(resident.getTown());
+        TownyAPI.getInstance().getDataSource().saveResident(resident);
+
+
+        return null;
+    }
 }

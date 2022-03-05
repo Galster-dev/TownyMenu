@@ -14,41 +14,41 @@ import org.mineacademy.fo.conversation.SimplePrompt;
 
 public class TownWithdrawPrompt extends SimplePrompt {
 
-	final Town town;
+    final Town town;
 
-	public TownWithdrawPrompt(Town town) {
-		super(false);
+    public TownWithdrawPrompt(Town town) {
+        super(false);
 
-		this.town = town;
+        this.town = town;
 
-	}
+    }
 
-	@Override
-	protected String getPrompt(ConversationContext ctx) {
-		return Localization.TownConversables.Withdraw.PROMPT;
-	}
+    @Override
+    protected String getPrompt(ConversationContext ctx) {
+        return Localization.TownConversables.Withdraw.PROMPT;
+    }
 
-	@Override
-	protected boolean isInputValid(ConversationContext context, String input) {
-		return ((Valid.isInteger(input) && (town.getAccount().canPayFromHoldings(Integer.parseInt(input)))) || input.equalsIgnoreCase(Localization.CANCEL));
-	}
+    @Override
+    protected boolean isInputValid(ConversationContext context, String input) {
+        return ((Valid.isInteger(input) && (town.getAccount().canPayFromHoldings(Integer.parseInt(input)))) || input.equalsIgnoreCase(Localization.CANCEL));
+    }
 
-	@Override
-	protected String getFailedValidationText(ConversationContext context, String invalidInput) {
-		return Localization.TownConversables.Withdraw.INVALID;
-	}
+    @Override
+    protected String getFailedValidationText(ConversationContext context, String invalidInput) {
+        return Localization.TownConversables.Withdraw.INVALID;
+    }
 
-	@Override
-	protected @Nullable
-	Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
-		if (input.equalsIgnoreCase(Localization.CANCEL))
-			return null;
+    @Override
+    protected @Nullable
+    Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
+        if (input.equalsIgnoreCase(Localization.CANCEL))
+            return null;
 
-		Resident res = TownyAPI.getInstance().getResident(getPlayer(context).getUniqueId());
-		town.getAccount().payTo(Integer.parseInt(input), res,"Withdrawn from menu.");
-		TownyAPI.getInstance().getDataSource().saveTown(town);
-		tell(Localization.TownConversables.Withdraw.RESPONSE.replace("{money_symbol}", Settings.MONEY_SYMBOL).replace("{input}", input));
+        Resident res = TownyAPI.getInstance().getResident(getPlayer(context).getUniqueId());
+        town.getAccount().payTo(Integer.parseInt(input), res, "Withdrawn from menu.");
+        TownyAPI.getInstance().getDataSource().saveTown(town);
+        tell(Localization.TownConversables.Withdraw.RESPONSE.replace("{money_symbol}", Settings.MONEY_SYMBOL).replace("{input}", input));
 
-		return null;
-	}
+        return null;
+    }
 }

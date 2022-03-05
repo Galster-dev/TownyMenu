@@ -8,7 +8,8 @@
     <!-- Finally, compile the plugin -->
     <target name="Build">
         <jar jarfile="target/${ant.project.name}.jar" basedir="./target/classes/" includes="**/*">
-            <zipgroupfileset dir="${user.home}/.m2/repository/com/github/kangarko/Foundation/${foundation.version}/" includes="**/*${foundation.version}.jar" />
+            <zipgroupfileset dir="${user.home}/.m2/repository/com/github/kangarko/Foundation/${foundation.version}/"
+                             includes="**/*${foundation.version}.jar"/>
         </jar>
     </target>
 
